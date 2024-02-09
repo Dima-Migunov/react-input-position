@@ -1,24 +1,24 @@
-# react-input-position v2 (Typescript)
+# react-input-position-ts v2 (Typescript)
 
-**react-input-position** is a component that decorates it's children with mouse/touch position tracking, a status toggle fired by click/gesture events, and more. Assisting in the creation of UI features that require detailed information about user touch/mouse input.
+**react-input-position-ts** is a component that decorates it's children with mouse/touch position tracking, a status toggle fired by click/gesture events, and more. Assisting in the creation of UI features that require detailed information about user touch/mouse input.
 
 The status toggle feature can be triggered by Click, Double Click, Hover, Mouse Down, Tap, Double Tap, Touch, and Long Touch gestures.
 
 Includes an item tracking feature which provides coordinates that can be moved by user input. This position can be limited through min/max settings or even limited based on the size of a linked element anywhere in the hierarchy of children. Useful for creating some image components such as magnifiers.
 
-<!-- [![npm version](https://img.shields.io/npm/v/react-input-position.svg?style=flat)](https://npmjs.org/package/react-input-position "View this project on npm")
-[![npm downloads](https://img.shields.io/npm/dm/react-input-position.svg?style=flat-square)](https://www.npmjs.com/package/react-input-position)
-[![MIT license](https://img.shields.io/badge/license-MIT-brightgreen.svg)](http://opensource.org/licenses/MIT) -->
+[![npm version](https://img.shields.io/npm/v/react-input-position-ts.svg?style=flat)](https://www.npmjs.com/package/react-input-position-ts "View this project on npm")
+<!-- [![npm downloads](https://img.shields.io/npm/dm/react-input-position-ts.svg?style=flat-square)](https://www.npmjs.com/package/react-input-position-ts) -->
+[![MIT license](https://img.shields.io/badge/license-MIT-brightgreen.svg)](http://opensource.org/licenses/MIT)
 
 <!-- ## Demo
 
 Visit the [react-input-position demo site](https://adamrisberg.github.io/react-input-position). -->
 
-<!-- ## Installation
+## Installation
 
 ```sh
-npm install --save react-input-position
-``` -->
+npm install --save react-input-position-ts
+```
 
 ## Basic Usage
 
@@ -224,11 +224,11 @@ Some styling passed to the component may be overwritten if they conflict with st
 
 By default, the width of the component will adjust to the size of the child components. You can change this behavior by passing in your own styling using the className and/or style props.
 
-<!-- ## Example Project
+## Example Project
 
 ```sh
-git clone https://github.com/adamrisberg/react-input-position.git
+git clone https://github.com/Dima-Migunov/react-input-position.git
 cd react-input-position
 npm install
 npm start
-``` -->
+```

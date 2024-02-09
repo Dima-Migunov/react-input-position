@@ -1,4 +1,5 @@
 import { resolve } from 'path'
+import dts from 'vite-plugin-dts'
 
 export default {
     build: {
@@ -10,4 +11,5 @@ export default {
             },
         },
     },
+    plugins: [dts()],
 }

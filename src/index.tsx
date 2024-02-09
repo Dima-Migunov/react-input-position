@@ -6,7 +6,7 @@ import utils from './utils'
 import { ReactInputPositionContext } from './interface'
 import { ComponentProps, DeviceHandler, Position, State } from './types'
 
-class ReactInputPosition extends Component<ComponentProps> implements ReactInputPositionContext {
+export class ReactInputPosition extends Component<ComponentProps> implements ReactInputPositionContext {
     state = defaultState
 
     clickMoveStartRef = 0
@@ -424,4 +424,3 @@ class ReactInputPosition extends Component<ComponentProps> implements ReactInput
 }
 
 export { MOUSE_ACTIVATION, TOUCH_ACTIVATION, defaultState }
-export default ReactInputPosition
