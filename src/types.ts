@@ -50,9 +50,7 @@ export type ComponentProps = {
     trackPassivePosition: Position
     trackPreviousPosition: Position
 
-    style: { [key: string]: string }
-    className: string
-    children: any
     cursorStyle: string
     cursorStyleActive: string
+    [elemName: string]: any
 }
