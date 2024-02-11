@@ -50,8 +50,8 @@ export type ComponentProps = {
     tapTimer?: number | undefined
     touchActivationMethod?: string
     trackItemPosition?: boolean
-    trackPassivePosition?: Position
-    trackPreviousPosition?: Position
+    trackPassivePosition?: boolean
+    trackPreviousPosition?: boolean
 
     cursorStyle?: string
     cursorStyleActive?: string

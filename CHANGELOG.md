@@ -1,7 +1,9 @@
 # Changelog
 
-## 2.0.3 (February 11, 2024)
+## 2.0.4 (February 11, 2024)
 
+- Added the Example in "Examples" folder
+- Added types.
 - Updated to React JS 18.
 - Converted into Typescript.
 
