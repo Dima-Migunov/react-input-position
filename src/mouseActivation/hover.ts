@@ -1,30 +1,30 @@
-import { ReactInputPositionContext } from '../interface'
+// @ts-nocheck
 import utils from '../utils'
 
-function mouseDown(this: ReactInputPositionContext) {
+function mouseDown(): void {
     this.mouseDown = true
 }
 
-function mouseUp(this: ReactInputPositionContext) {
+function mouseUp(): void {
     this.mouseDown = false
 }
 
-function mouseMove(this: ReactInputPositionContext, e: MouseEvent) {
+function mouseMove(e: MouseEvent): void {
     const position = { x: e.clientX, y: e.clientY }
 
     if (!this.getState().active) {
-        return this.activate(position)
+        this.activate(position)
+    } else {
+        this.setPosition(position, this.mouseDown)
     }
-
-    this.setPosition(position, this.mouseDown)
 }
 
-function mouseEnter(this: ReactInputPositionContext, e: MouseEvent) {
+function mouseEnter(e: MouseEvent): void {
     const position = { x: e.clientX, y: e.clientY }
     this.activate(position)
 }
 
-function mouseLeave(this: ReactInputPositionContext) {
+function mouseLeave(): void {
     this.deactivate()
     this.mouseDown = false
 }

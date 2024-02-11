@@ -6,9 +6,7 @@ The status toggle feature can be triggered by Click, Double Click, Hover, Mouse 
 
 Includes an item tracking feature which provides coordinates that can be moved by user input. This position can be limited through min/max settings or even limited based on the size of a linked element anywhere in the hierarchy of children. Useful for creating some image components such as magnifiers.
 
-[![npm version](https://img.shields.io/npm/v/react-input-position-ts.svg?style=flat)](https://www.npmjs.com/package/react-input-position-ts "View this project on npm")
-<!-- [![npm downloads](https://img.shields.io/npm/dm/react-input-position-ts.svg?style=flat-square)](https://www.npmjs.com/package/react-input-position-ts) -->
-[![MIT license](https://img.shields.io/badge/license-MIT-brightgreen.svg)](http://opensource.org/licenses/MIT)
+[![npm version](https://img.shields.io/npm/v/react-input-position-ts.svg?style=flat)](https://www.npmjs.com/package/react-input-position-ts "View this project on npm") [![MIT license](https://img.shields.io/badge/license-MIT-brightgreen.svg)](http://opensource.org/licenses/MIT) [![npm downloads](https://img.shields.io/npm/dm/react-input-position-ts.svg?style=flat-square)](https://www.npmjs.com/package/react-input-position-ts)
 
 <!-- ## Demo
 

@@ -1,24 +1,15 @@
 import { Children, cloneElement } from 'react'
-
-type Dimensions = {
-    width: number
-    height: number
-}
-
-type Position = {
-    x: number
-    y: number
-}
+import { Dimensions, Position } from './types'
 
 function isReactComponent(element: any): boolean {
     return typeof element.type === 'function'
 }
 
-function decorateChild(child: any, props: any) {
+function decorateChild(child: any, props: any): React.DetailedReactHTMLElement<any, HTMLElement> {
     return cloneElement(child, props)
 }
 
-function shouldDecorateChild(child: any) {
+function shouldDecorateChild(child: any): boolean {
     return !!child && isReactComponent(child)
 }
 
@@ -117,7 +108,6 @@ function calculateItemPosition(
     multiplier: number
 ) {
     const newItemPosition = { ...itemPosition }
-
     const moveX = (activePosition.x - prevActivePosition.x) * multiplier
     const moveY = (activePosition.y - prevActivePosition.y) * multiplier
 

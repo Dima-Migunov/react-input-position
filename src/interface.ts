@@ -1,7 +1,6 @@
-import { Component } from 'react'
-import { ComponentProps, DeviceHandler, Position } from './types'
+import { DeviceHandler, Position } from './types'
 
-export interface ReactInputPositionContext extends Component<ComponentProps> {
+export interface ReactInputPositionContext {
     // state: typeof defaultState
     // props: {
     //     [key: string]: any
@@ -32,8 +31,8 @@ export interface ReactInputPositionContext extends Component<ComponentProps> {
     touched: boolean
     touchHandlers: DeviceHandler[]
     // ----------------------------------
-    toggleActive: any
+    toggleActive: (p: Position) => void
     getState: any
-    setPassivePosition: any
-    setPosition: any
+    setPassivePosition: (p: Position) => void
+    setPosition: (p: Position, updateItemPosition: boolean, activate: boolean, centerItem?: boolean) => void
 }

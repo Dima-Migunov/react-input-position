@@ -1,15 +1,37 @@
 {
   "name": "react-input-position-ts",
-  "version": "2.0.2",
-  "license": "MIT",
+  "version": "2.0.3",
   "type": "module",
-  "types": "./dist/index.d.ts",
+  "description": "A React component that decorates it's children with mouse/touch position tracking, a status toggle fired by click/gesture events, and more.",
+  "keywords": [
+    "touch",
+    "tap",
+    "gesture",
+    "mouse",
+    "click",
+    "move",
+    "cursor",
+    "input",
+    "position",
+    "coordinates",
+    "track",
+    "event",
+    "listener"
+  ],
+  "license": "MIT",
+  "author": "Dmitri Migunov <dmitri.migunov@gmail.com>",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Dima-Migunov/react-input-position-ts.git"
+  },
   "files": [
     "dist",
-    "README.md"
+    "README.md",
+    "CHANGELOG.md"
   ],
   "main": "./dist/index.cjs",
   "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
   "exports": {
     ".": {
       "import": "./dist/index.js",
@@ -21,6 +43,10 @@
     "build": "tsc && vite build",
     "preview": "vite preview"
   },
+  "peerDependencies": {
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  },
   "devDependencies": {
     "@types/react": "^18.2.55",
     "@types/react-dom": "^18.2.19",
@@ -30,7 +56,7 @@
     "vite": "^5.0.12",
     "vite-plugin-dts": "^3.7.2"
   },
-  "peerDependencies": {
-    "react": "^18.2.0"
+  "dependencies": {
+    "prop-types": "^15.7.2"
   }
 }

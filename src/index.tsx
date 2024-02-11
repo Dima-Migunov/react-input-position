@@ -1,33 +1,44 @@
 import React, { Component } from 'react'
 import mouseActivation from './mouseActivation'
 import touchActivation from './touchActivation'
-import { MOUSE_ACTIVATION, TOUCH_ACTIVATION, defaultState } from './constants'
+import { MOUSE_ACTIVATION, TOUCH_ACTIVATION } from './constants'
 import utils from './utils'
-import { ReactInputPositionContext } from './interface'
 import { ComponentProps, DeviceHandler, Position, State } from './types'
+import { ReactInputPositionContext } from './interface'
 
-export class ReactInputPosition extends Component<ComponentProps> implements ReactInputPositionContext {
+const defaultState = {
+    active: false,
+    activePosition: { x: 0, y: 0 },
+    prevActivePosition: { x: 0, y: 0 },
+    passivePosition: { x: 0, y: 0 },
+    elementDimensions: { width: 0, height: 0 },
+    elementOffset: { left: 0, top: 0 },
+    itemPosition: { x: 0, y: 0 },
+    itemDimensions: { width: 0, height: 0 },
+}
+
+class ReactInputPosition extends Component<ComponentProps> implements ReactInputPositionContext {
     state = defaultState
 
-    clickMoveStartRef = 0
     containerRef = React.createRef<HTMLDivElement>()
-    doubleTapTimedOut = false
-    doubleTapTimer: number | undefined = undefined
-    justTouched = false
     itemRef = React.createRef<HTMLImageElement>()
-    longTouchStartRef = 0
-    longTouchTimedOut = false
-    longTouchTimer: number | undefined = undefined
-    mouseDown = false
-    mouseOutside = false
-    refresh = true
-    supportsPassive = false
-    tapped = false
-    tapTimedOut = false
-    tapTimer: number | undefined
-    touched = false
 
+    clickMoveStartRef: number = 0
+    doubleTapTimedOut: boolean = false
+    doubleTapTimer: number | undefined = undefined
+    justTouched: boolean = false
+    longTouchStartRef: number = 0
+    longTouchTimedOut: boolean = false
+    longTouchTimer: number | undefined = undefined
+    mouseDown: boolean = false
     mouseHandlers: DeviceHandler[] = []
+    mouseOutside: boolean = false
+    refresh: boolean = true
+    supportsPassive: boolean = false
+    tapped: boolean = false
+    tapTimedOut = false
+    tapTimer: number | undefined = undefined
+    touched: boolean = false
     touchHandlers: DeviceHandler[] = []
 
     static defaultProps = {
@@ -45,18 +56,18 @@ export class ReactInputPosition extends Component<ComponentProps> implements Rea
         mouseDownAllowOutside: false,
     }
 
-    componentDidMount(): void {
+    componentDidMount() {
         this.init()
         this.refreshPosition()
     }
 
-    componentWillUnmount(): void {
+    componentWillUnmount() {
         this.removeMouseEventListeners()
         this.removeTouchEventListeners()
         this.removeOtherEventListeners()
     }
 
-    componentDidUpdate(prevProps: ComponentProps): void {
+    componentDidUpdate(prevProps: { [key: string]: any }) {
         if (prevProps.mouseActivationMethod !== this.props.mouseActivationMethod) {
             this.removeMouseEventListeners()
             this.setMouseInteractionMethods()
@@ -76,17 +87,14 @@ export class ReactInputPosition extends Component<ComponentProps> implements Rea
         this.addMouseEventListeners()
         this.addTouchEventListeners()
         this.addOtherEventListeners()
-        console.log('mouseActivation', mouseActivation)
     }
 
     checkPassiveEventSupport() {
         this.supportsPassive = false
-
         try {
             const options = Object.defineProperty({}, 'passive', {
                 get: () => (this.supportsPassive = true),
             })
-
             window.addEventListener('testPassive', () => {}, options)
             window.removeEventListener('testPassive', () => {}, options)
         } catch (e) {}
@@ -95,7 +103,7 @@ export class ReactInputPosition extends Component<ComponentProps> implements Rea
     updateState(changes: State, cb?: any) {
         const { onUpdate } = this.props
 
-        let activationCallback: any
+        let activationCallback: ((...args: any[]) => any) | undefined
 
         if (changes.hasOwnProperty('active')) {
             activationCallback = changes.active ? this.props.onActivate : this.props.onDeactivate
@@ -122,7 +130,7 @@ export class ReactInputPosition extends Component<ComponentProps> implements Rea
         return this.props.overrideState ? this.props.overrideState : this.state
     }
 
-    getStateClone(): State {
+    getStateClone() {
         return JSON.parse(JSON.stringify(this.getState()))
     }
 
@@ -132,8 +140,7 @@ export class ReactInputPosition extends Component<ComponentProps> implements Rea
 
     refreshPosition() {
         const { trackItemPosition, centerItemOnLoad } = this.props
-
-        this.setPosition({ x: 0, y: 0 }, trackItemPosition, false, centerItemOnLoad)
+        this.setPosition({ x: 0, y: 0 }, trackItemPosition ?? false, false, centerItemOnLoad)
     }
 
     setInputInteractionMethods() {
@@ -142,6 +149,8 @@ export class ReactInputPosition extends Component<ComponentProps> implements Rea
     }
 
     setMouseInteractionMethods() {
+        if (!this.props.mouseActivationMethod) return
+
         const mouseInteractionMethods = mouseActivation[this.props.mouseActivationMethod]
         this.mouseHandlers = []
 
@@ -154,6 +163,8 @@ export class ReactInputPosition extends Component<ComponentProps> implements Rea
     }
 
     setTouchInteractionMethods() {
+        if (!this.props.touchActivationMethod) return
+
         const touchInteractionMethods = touchActivation[this.props.touchActivationMethod]
         this.touchHandlers = []
 
@@ -197,7 +208,7 @@ export class ReactInputPosition extends Component<ComponentProps> implements Rea
         const { activePosition, itemPosition } = this.getState()
 
         // Set container div info and active position
-        const stateUpdate: State = {
+        const stateUpdate: { [key: string]: any } = {
             elementDimensions: { width, height },
             elementOffset: { left, top },
             activePosition: {
@@ -237,14 +248,14 @@ export class ReactInputPosition extends Component<ComponentProps> implements Rea
 
         // Create adjusted limits
         const limits = utils.createAdjustedLimits(
-            itemPositionMinX,
-            itemPositionMaxX,
-            itemPositionMinY,
-            itemPositionMaxY,
+            itemPositionMinX ?? 0,
+            itemPositionMaxX ?? 0,
+            itemPositionMinY ?? 0,
+            itemPositionMaxY ?? 0,
             stateUpdate.elementDimensions,
             stateUpdate.itemDimensions,
-            itemPositionLimitBySize,
-            itemPositionLimitInternal
+            itemPositionLimitBySize ?? false,
+            itemPositionLimitInternal ?? false
         )
 
         // Center item
@@ -263,15 +274,15 @@ export class ReactInputPosition extends Component<ComponentProps> implements Rea
         let shouldLimitItem = true
 
         // Set item position
-        if (trackItemPosition && linkItemToActive && stateUpdate.activePosition) {
+        if (trackItemPosition && linkItemToActive) {
             stateUpdate.itemPosition = { ...stateUpdate.activePosition }
-        } else if (trackItemPosition && alignItemOnActivePos && stateUpdate.activePosition) {
+        } else if (trackItemPosition && alignItemOnActivePos) {
             stateUpdate.itemPosition = utils.alignItemOnPosition(
                 stateUpdate.elementDimensions,
                 stateUpdate.itemDimensions,
                 stateUpdate.activePosition
             )
-        } else if (trackItemPosition && activate && centerItemOnActivatePos && stateUpdate.activePosition) {
+        } else if (trackItemPosition && activate && centerItemOnActivatePos) {
             stateUpdate.itemPosition = utils.centerItemOnPosition(
                 stateUpdate.elementDimensions,
                 stateUpdate.itemDimensions,
@@ -282,7 +293,7 @@ export class ReactInputPosition extends Component<ComponentProps> implements Rea
                 itemPosition,
                 stateUpdate.prevActivePosition,
                 stateUpdate.activePosition,
-                itemMovementMultiplier
+                itemMovementMultiplier ?? 1
             )
         } else {
             shouldLimitItem = false
@@ -303,8 +314,7 @@ export class ReactInputPosition extends Component<ComponentProps> implements Rea
     }
 
     setPassivePosition(position: Position) {
-        if (!this.props.trackPassivePosition) return
-        if (!this.containerRef.current) return
+        if (!this.props.trackPassivePosition || !this.containerRef.current) return
 
         const { left, top } = this.containerRef.current.getBoundingClientRect()
 
@@ -324,7 +334,7 @@ export class ReactInputPosition extends Component<ComponentProps> implements Rea
         }
     }
 
-    activate(position: Position = { x: 0, y: 0 }) {
+    activate(position = { x: 0, y: 0 }) {
         this.setPosition(position, false, true)
     }
 
@@ -333,11 +343,11 @@ export class ReactInputPosition extends Component<ComponentProps> implements Rea
     }
 
     startRefreshTimer() {
-        if (!this.props.minUpdateSpeedInMs) return
-
-        setTimeout(() => {
-            this.refresh = true
-        }, this.props.minUpdateSpeedInMs)
+        if (this.props.minUpdateSpeedInMs) {
+            setTimeout(() => {
+                this.refresh = true
+            }, this.props.minUpdateSpeedInMs)
+        }
     }
 
     startTapTimer() {
@@ -352,10 +362,10 @@ export class ReactInputPosition extends Component<ComponentProps> implements Rea
         }, this.props.doubleTapDurationInMs)
     }
 
-    startLongTouchTimer(e: Position) {
+    startLongTouchTimer(p: Position) {
         this.longTouchTimer = setTimeout(() => {
             if (this.touched) {
-                this.toggleActive(e)
+                this.toggleActive(p)
             }
         }, this.props.longTouchDurationInMs)
     }
@@ -383,7 +393,7 @@ export class ReactInputPosition extends Component<ComponentProps> implements Rea
     }
 
     removeTouchEventListeners() {
-        this.touchHandlers.forEach((touch: DeviceHandler) => {
+        this.touchHandlers.forEach((touch) => {
             this.containerRef.current?.removeEventListener(touch.event, touch.handler, this.supportsPassive)
         })
     }
@@ -402,7 +412,7 @@ export class ReactInputPosition extends Component<ComponentProps> implements Rea
         const { style, className, children, cursorStyle, cursorStyleActive } = this.props
         const { active } = this.getState()
 
-        const combinedStyle: { [key: string]: string } = {
+        const combinedStyle = {
             ...style,
             WebkitUserSelect: 'none',
             MozUserSelect: 'none',
@@ -424,3 +434,4 @@ export class ReactInputPosition extends Component<ComponentProps> implements Rea
 }
 
 export { MOUSE_ACTIVATION, TOUCH_ACTIVATION, defaultState }
+export default ReactInputPosition

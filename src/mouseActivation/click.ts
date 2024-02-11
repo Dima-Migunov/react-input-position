@@ -1,19 +1,17 @@
-import { ReactInputPositionContext } from '../interface'
+// @ts-nocheck
 import utils from '../utils'
 
-function mouseDown(this: ReactInputPositionContext, e: MouseEvent) {
+function mouseDown(e: MouseEvent): void {
     this.mouseDown = true
-
     this.clickMoveStartRef = e.clientX + e.clientY
 }
 
-function mouseUp(this: ReactInputPositionContext, e: MouseEvent) {
+function mouseUp(e: MouseEvent): void {
     if (!this.mouseDown) return
 
     this.mouseDown = false
 
     const position = { x: e.clientX, y: e.clientY }
-
     const clickMoveEnd = position.x + position.y
     const diff = Math.abs(this.clickMoveStartRef - clickMoveEnd)
 
@@ -22,17 +20,17 @@ function mouseUp(this: ReactInputPositionContext, e: MouseEvent) {
     }
 }
 
-function mouseMove(this: ReactInputPositionContext, e: MouseEvent) {
+function mouseMove(e: MouseEvent): void {
     const position = { x: e.clientX, y: e.clientY }
 
     if (!this.getState().active) {
-        return this.setPassivePosition(position)
+        this.setPassivePosition(position)
+    } else {
+        this.setPosition(position, this.mouseDown)
     }
-
-    this.setPosition(position, this.mouseDown)
 }
 
-function mouseLeave(this: ReactInputPositionContext) {
+function mouseLeave(): void {
     this.mouseDown = false
 }
 

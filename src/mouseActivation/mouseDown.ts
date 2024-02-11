@@ -1,12 +1,12 @@
-import { ReactInputPositionContext } from '../interface'
+// @ts-nocheck
+import { DeviceHandler } from '../types'
 import utils from '../utils'
 
-function mouseDown(this: ReactInputPositionContext, e: MouseEvent) {
-    const position = { x: e.clientX, y: e.clientY }
-    this.activate(position)
+function mouseDown(e: MouseEvent): void {
+    this.activate({ x: e.clientX, y: e.clientY })
 }
 
-function mouseUp(this: ReactInputPositionContext) {
+function mouseUp(): void {
     this.deactivate()
 
     if (this.mouseOutside) {
@@ -14,40 +14,40 @@ function mouseUp(this: ReactInputPositionContext) {
     }
 }
 
-function mouseMove(this: ReactInputPositionContext, e: MouseEvent) {
+function mouseMove(e: MouseEvent): void {
     const position = { x: e.clientX, y: e.clientY }
 
     if (!this.getState().active) {
-        return this.setPassivePosition(position)
+        this.setPassivePosition(position)
+    } else {
+        this.setPosition(position, true)
     }
-
-    this.setPosition(position, true)
 }
 
-function mouseEnter(this: ReactInputPositionContext) {
+function mouseEnter(): void {
     if (this.mouseOutside) {
         this.mouseOutside = false
         addRemoveOutsideHandlers.call(this)
     }
 }
 
-function mouseLeave(this: ReactInputPositionContext) {
+function mouseLeave(): void {
     if (!this.getState().active) {
         return
     }
 
     if (!this.props.mouseDownAllowOutside) {
-        return this.deactivate()
+        this.deactivate()
+    } else {
+        this.mouseOutside = true
+        addRemoveOutsideHandlers.call(this, true)
     }
-
-    this.mouseOutside = true
-    addRemoveOutsideHandlers.call(this, true)
 }
 
-function addRemoveOutsideHandlers(this: ReactInputPositionContext, add?: boolean) {
+function addRemoveOutsideHandlers(add: boolean): void {
     this.mouseHandlers
-        .filter((h) => h.event === 'mouseup' || h.event === 'mousemove')
-        .forEach(({ event, handler }) => {
+        .filter((h: DeviceHandler) => h.event === 'mouseup' || h.event === 'mousemove')
+        .forEach(({ event, handler }: DeviceHandler) => {
             if (add) {
                 window.addEventListener(event, handler)
             } else {

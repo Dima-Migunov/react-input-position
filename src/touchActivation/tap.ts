@@ -1,12 +1,12 @@
-import { ReactInputPositionContext } from '../interface'
+// @ts-nocheck
 
-function touchStart(this: ReactInputPositionContext) {
+function touchStart() {
     this.touched = true
     this.justTouched = true
     this.startTapTimer()
 }
 
-function touchEnd(this: ReactInputPositionContext, e: TouchEvent) {
+function touchEnd(e: TouchEvent) {
     if (e.cancelable) e.preventDefault()
 
     this.touched = false
@@ -26,7 +26,7 @@ function touchEnd(this: ReactInputPositionContext, e: TouchEvent) {
     this.tapTimedOut = false
 }
 
-function touchMove(this: ReactInputPositionContext, e: TouchEvent) {
+function touchMove(e: TouchEvent) {
     if (!this.getState().active) return
     if (e.cancelable) e.preventDefault()
 
@@ -36,7 +36,7 @@ function touchMove(this: ReactInputPositionContext, e: TouchEvent) {
     this.justTouched = false
 }
 
-function touchCancel(this: ReactInputPositionContext) {
+function touchCancel() {
     this.deactivate()
 }
 
